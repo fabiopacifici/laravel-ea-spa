@@ -1,20 +1,26 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
+    <img width="150" alt="Vue logo" src="./assets/logo.svg">
+
+    <nav>
+       <router-link to="/">Home</router-link> <!-- a -->
+       <router-link to="/games">Games</router-link> <!-- a -->
+       <router-link to="/contacts">Contacts</router-link> <!-- a -->
+
+    </nav>
+
+    <router-view></router-view>
     <!-- <HelloWorld msg="Ciao Vue App"/> -->
-    <games-section></games-section>
+    
+
   </div>
 </template>
 
 <script>
 //import HelloWorld from './components/HelloWorld.vue'
-import GamesSection from './components/GamesSection.vue'
 
 export default {
   name: 'App',
-  components: {
-    GamesSection
-  }
 }
 </script>
 

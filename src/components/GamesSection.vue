@@ -3,15 +3,17 @@
 
 <h1>Games</h1>
 <div class="games">
-  <!-- TODO: Implement single component -->
-  <game-component></game-component>
 
-  <div class="game" v-for="game in games" :key="game.id">
-      <img :src="base_url + 'storage/' + game.thumb" alt="">
-      <h3>{{game.name}}</h3>
-  </div>
+  <game-component v-for="game in games" :key="game.id" :game="game" :base_url="base_url"></game-component>
 
 </div>
+
+
+
+<pagination-component @prev="prevPage()" @next="nextPage()"  :links="links" :meta="meta">
+
+</pagination-component>
+
 </section>
   
 </template>
@@ -19,19 +21,26 @@
 
 <script>
 import axios from "axios";
+import GameComponent from "@/components/GameComponent";
+import PaginationComponent from './PaginationComponent.vue';
 export default {
+  components: {
+    GameComponent,
+    PaginationComponent
+  },
   data(){
     return {
       base_url: 'http://127.0.0.1:8000/',
       api_endpoint: 'api/games',
-      games: null,
-      meta: null,
-      links: null
+      games: {},
+      meta: {},
+      links: {}
     }
   },
+  methods:{
 
-  mounted(){
-    const fullUrl = this.base_url + this.api_endpoint;
+    callApi(fullUrl){
+  
       axios.get(fullUrl).then(resp => {
       console.log(resp);
       this.games = resp.data.data;
@@ -42,6 +51,25 @@ export default {
     .catch(e => {
       console.error('Sorry! Something went wrong' + e);
     })
+    },
+
+    prevPage(){
+      console.log('Pagina precedente');
+      // chiata per pagina precedente
+
+      this.callApi(this.links.prev);
+    },
+    nextPage(){
+      console.log('Pagina successiva');
+      // chiamata pagina successiva
+      this.callApi(this.links.next);
+    },
+
+  },
+  mounted(){
+    const fullUrl = this.base_url + this.api_endpoint;
+     this.callApi(fullUrl);
+  
   }
 
 }
